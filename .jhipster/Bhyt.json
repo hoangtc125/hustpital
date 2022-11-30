@@ -1,0 +1,52 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144056",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "bhyt",
+  "fields": [
+    {
+      "fieldName": "qrcode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "sothe",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "maKCBBD",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "diachi",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "ngayBatDau",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "ngayKetThuc",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "ngayBatDau5namLT",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "ngayBatDauMienCCT",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "ngayKetThucMienCCT",
+      "fieldType": "Instant"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Bhyt",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

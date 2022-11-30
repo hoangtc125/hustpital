@@ -1,0 +1,32 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144048",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "phong_kham",
+  "fields": [
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "PhongKham",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "chuyenKhoa",
+      "relationshipName": "chuyenkhoa",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "no"
+}

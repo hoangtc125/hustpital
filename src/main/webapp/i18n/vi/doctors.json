@@ -1,0 +1,37 @@
+{
+  "hustpitalApp": {
+    "doctors": {
+      "home": {
+        "title": "Doctors",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Doctors",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Doctors",
+        "notFound": "No Doctors found"
+      },
+      "created": "Một Doctors mới được tạo với định danh {{ param }}",
+      "updated": "Một Doctors cập nhật với định danh {{ param }}",
+      "deleted": "Một Doctors đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Doctors {{ id }}?"
+      },
+      "detail": {
+        "title": "Doctors"
+      },
+      "id": "ID",
+      "name": "Name",
+      "phone": "Phone",
+      "citizenIdentification": "Citizen Identification",
+      "maBHXH": "Ma BHXH",
+      "gender": "Gender",
+      "dateOfBirth": "Date Of Birth",
+      "address": "Address",
+      "maSoThue": "Ma So Thue",
+      "user": "User",
+      "ethnic": "Ethnic",
+      "country": "Country",
+      "bank": "Bank",
+      "chuyenkhoa": "Chuyenkhoa",
+      "lichlamviec": "Lichlamviec"
+    }
+  }
+}

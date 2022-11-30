@@ -1,0 +1,25 @@
+{
+  "hustpitalApp": {
+    "chuyenKhoa": {
+      "home": {
+        "title": "Chuyen Khoas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Chuyen Khoa",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Chuyen Khoa",
+        "notFound": "No Chuyen Khoas found"
+      },
+      "created": "Một Chuyen Khoa mới được tạo với định danh {{ param }}",
+      "updated": "Một Chuyen Khoa cập nhật với định danh {{ param }}",
+      "deleted": "Một Chuyen Khoa đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Chuyen Khoa {{ id }}?"
+      },
+      "detail": {
+        "title": "Chuyen Khoa"
+      },
+      "id": "ID",
+      "code": "Code",
+      "name": "Name"
+    }
+  }
+}

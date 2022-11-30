@@ -1,0 +1,10 @@
+{
+  "hustpitalApp": {
+    "Gender": {
+      "null": "",
+      "Male": "Male",
+      "Female": "Female",
+      "Custome": "Custome"
+    }
+  }
+}

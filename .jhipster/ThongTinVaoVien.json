@@ -1,0 +1,51 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144058",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "thong_tin_vao_vien",
+  "fields": [
+    {
+      "fieldName": "ngayKham",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "tinhTrangVaoVien",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "soPhieu",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "maBVChuyenDen",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "benhChuyenDen",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ThongTinVaoVien",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "patients",
+      "ownerSide": true,
+      "relationshipName": "patient",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "phongKham",
+      "ownerSide": true,
+      "relationshipName": "phongkham",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "no"
+}

@@ -1,0 +1,24 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144049",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "chuyen_khoa",
+  "fields": [
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ChuyenKhoa",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

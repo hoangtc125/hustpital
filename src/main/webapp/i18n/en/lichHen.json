@@ -1,0 +1,32 @@
+{
+  "hustpitalApp": {
+    "lichHen": {
+      "home": {
+        "title": "Lich Hens",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Lich Hen",
+        "createOrEditLabel": "Create or edit a Lich Hen",
+        "notFound": "No Lich Hens found"
+      },
+      "created": "A new Lich Hen is created with identifier {{ param }}",
+      "updated": "A Lich Hen is updated with identifier {{ param }}",
+      "deleted": "A Lich Hen is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Lich Hen {{ id }}?"
+      },
+      "detail": {
+        "title": "Lich Hen"
+      },
+      "id": "ID",
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "lyDoKham": "Ly Do Kham",
+      "dateOfBirth": "Date Of Birth",
+      "lichhenType": "Lichhen Type",
+      "doctor": "Doctor",
+      "user": "User"
+    }
+  }
+}

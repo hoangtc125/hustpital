@@ -1,0 +1,28 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144052",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "districts",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Districts",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "cities",
+      "relationshipName": "city",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "no"
+}

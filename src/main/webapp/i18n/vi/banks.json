@@ -1,0 +1,25 @@
+{
+  "hustpitalApp": {
+    "banks": {
+      "home": {
+        "title": "Banks",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Banks",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Banks",
+        "notFound": "No Banks found"
+      },
+      "created": "Một Banks mới được tạo với định danh {{ param }}",
+      "updated": "Một Banks cập nhật với định danh {{ param }}",
+      "deleted": "Một Banks đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Banks {{ id }}?"
+      },
+      "detail": {
+        "title": "Banks"
+      },
+      "id": "ID",
+      "code": "Code",
+      "name": "Name"
+    }
+  }
+}

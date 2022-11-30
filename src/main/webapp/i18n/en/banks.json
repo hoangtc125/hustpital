@@ -1,0 +1,25 @@
+{
+  "hustpitalApp": {
+    "banks": {
+      "home": {
+        "title": "Banks",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Banks",
+        "createOrEditLabel": "Create or edit a Banks",
+        "notFound": "No Banks found"
+      },
+      "created": "A new Banks is created with identifier {{ param }}",
+      "updated": "A Banks is updated with identifier {{ param }}",
+      "deleted": "A Banks is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Banks {{ id }}?"
+      },
+      "detail": {
+        "title": "Banks"
+      },
+      "id": "ID",
+      "code": "Code",
+      "name": "Name"
+    }
+  }
+}

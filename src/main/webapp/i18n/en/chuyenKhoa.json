@@ -1,0 +1,25 @@
+{
+  "hustpitalApp": {
+    "chuyenKhoa": {
+      "home": {
+        "title": "Chuyen Khoas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Chuyen Khoa",
+        "createOrEditLabel": "Create or edit a Chuyen Khoa",
+        "notFound": "No Chuyen Khoas found"
+      },
+      "created": "A new Chuyen Khoa is created with identifier {{ param }}",
+      "updated": "A Chuyen Khoa is updated with identifier {{ param }}",
+      "deleted": "A Chuyen Khoa is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Chuyen Khoa {{ id }}?"
+      },
+      "detail": {
+        "title": "Chuyen Khoa"
+      },
+      "id": "ID",
+      "code": "Code",
+      "name": "Name"
+    }
+  }
+}

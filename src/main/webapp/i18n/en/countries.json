@@ -1,0 +1,24 @@
+{
+  "hustpitalApp": {
+    "countries": {
+      "home": {
+        "title": "Countries",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Countries",
+        "createOrEditLabel": "Create or edit a Countries",
+        "notFound": "No Countries found"
+      },
+      "created": "A new Countries is created with identifier {{ param }}",
+      "updated": "A Countries is updated with identifier {{ param }}",
+      "deleted": "A Countries is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Countries {{ id }}?"
+      },
+      "detail": {
+        "title": "Countries"
+      },
+      "id": "ID",
+      "name": "Name"
+    }
+  }
+}

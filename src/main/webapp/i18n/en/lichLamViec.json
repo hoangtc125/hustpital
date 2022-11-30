@@ -1,0 +1,26 @@
+{
+  "hustpitalApp": {
+    "lichLamViec": {
+      "home": {
+        "title": "Lich Lam Viecs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Lich Lam Viec",
+        "createOrEditLabel": "Create or edit a Lich Lam Viec",
+        "notFound": "No Lich Lam Viecs found"
+      },
+      "created": "A new Lich Lam Viec is created with identifier {{ param }}",
+      "updated": "A Lich Lam Viec is updated with identifier {{ param }}",
+      "deleted": "A Lich Lam Viec is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Lich Lam Viec {{ id }}?"
+      },
+      "detail": {
+        "title": "Lich Lam Viec"
+      },
+      "id": "ID",
+      "thu": "Thu",
+      "thoiGian": "Thoi Gian",
+      "doctor": "Doctor"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144055",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "jobs",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Jobs",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

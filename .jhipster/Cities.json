@@ -1,0 +1,28 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144051",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "cities",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Cities",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "countries",
+      "relationshipName": "country",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "no"
+}

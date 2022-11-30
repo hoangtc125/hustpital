@@ -1,0 +1,37 @@
+{
+  "hustpitalApp": {
+    "doctors": {
+      "home": {
+        "title": "Doctors",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Doctors",
+        "createOrEditLabel": "Create or edit a Doctors",
+        "notFound": "No Doctors found"
+      },
+      "created": "A new Doctors is created with identifier {{ param }}",
+      "updated": "A Doctors is updated with identifier {{ param }}",
+      "deleted": "A Doctors is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Doctors {{ id }}?"
+      },
+      "detail": {
+        "title": "Doctors"
+      },
+      "id": "ID",
+      "name": "Name",
+      "phone": "Phone",
+      "citizenIdentification": "Citizen Identification",
+      "maBHXH": "Ma BHXH",
+      "gender": "Gender",
+      "dateOfBirth": "Date Of Birth",
+      "address": "Address",
+      "maSoThue": "Ma So Thue",
+      "user": "User",
+      "ethnic": "Ethnic",
+      "country": "Country",
+      "bank": "Bank",
+      "chuyenkhoa": "Chuyenkhoa",
+      "lichlamviec": "Lichlamviec"
+    }
+  }
+}

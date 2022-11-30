@@ -7,6 +7,21 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Thực thể",
+        "phongKham": "Phong Kham",
+        "chuyenKhoa": "Chuyen Khoa",
+        "countries": "Countries",
+        "cities": "Cities",
+        "districts": "Districts",
+        "wards": "Wards",
+        "ethnics": "Ethnics",
+        "jobs": "Jobs",
+        "bhyt": "Bhyt",
+        "patients": "Patients",
+        "thongTinVaoVien": "Thong Tin Vao Vien",
+        "banks": "Banks",
+        "lichLamViec": "Lich Lam Viec",
+        "doctors": "Doctors",
+        "lichHen": "Lich Hen",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

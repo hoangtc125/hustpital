@@ -1,0 +1,24 @@
+{
+  "hustpitalApp": {
+    "ethnics": {
+      "home": {
+        "title": "Ethnics",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Ethnics",
+        "createOrEditLabel": "Create or edit a Ethnics",
+        "notFound": "No Ethnics found"
+      },
+      "created": "A new Ethnics is created with identifier {{ param }}",
+      "updated": "A Ethnics is updated with identifier {{ param }}",
+      "deleted": "A Ethnics is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Ethnics {{ id }}?"
+      },
+      "detail": {
+        "title": "Ethnics"
+      },
+      "id": "ID",
+      "name": "Name"
+    }
+  }
+}

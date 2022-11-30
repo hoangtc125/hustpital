@@ -1,0 +1,124 @@
+enum Gender {
+	Male, Female, Custome
+}
+enum BHYT {
+	Yes, No
+}
+enum Role {
+	BenhNhan, NhanVien, Admin
+}
+enum Admission {
+	DatChoBanThan, DatChoNguoiThan
+}
+
+entity PhongKham {
+	code String
+    name String
+}
+entity ChuyenKhoa {
+	code String
+    name String
+}
+entity Countries {
+	name String
+}
+entity Cities {
+	name String
+}
+entity Districts {
+	name String
+}
+entity Wards {
+	name String
+}
+entity Ethnics {
+	name String
+}
+entity Jobs {
+	name String
+}
+entity Bhyt {
+	qrcode String
+    sothe String
+    maKCBBD String
+    diachi String
+    ngayBatDau Instant
+    ngayKetThuc Instant
+    ngayBatDau5namLT Instant
+    ngayBatDauMienCCT Instant
+    ngayKetThucMienCCT Instant
+}
+entity Patients {
+	name String
+    gender Gender
+    address String
+    dateOfBirth Instant
+    phone String
+    citizenIdentification String
+    maBHXH String
+    workPlace String
+    workAddress String
+    patientType BHYT
+}
+entity ThongTinVaoVien {
+	ngayKham Instant
+    tinhTrangVaoVien String
+    soPhieu Integer
+    maBVChuyenDen Integer
+    benhChuyenDen String
+}
+entity Banks {
+	code String
+    name String
+}
+entity LichLamViec {
+	thu Integer
+    thoiGian String
+}
+entity Doctors {
+	name String
+    phone String
+    citizenIdentification String
+    maBHXH String
+    gender Gender
+    dateOfBirth Instant
+    address String
+    maSoThue String
+}
+entity LichHen {
+	name String
+    phone String
+    email String
+    address String
+    lyDoKham String
+    dateOfBirth Instant
+    lichhenType Admission
+}
+
+relationship OneToOne {
+    Patients{country(name) } to Countries
+    Patients{city(name) } to Cities
+    Patients{district(name) } to Districts
+    Patients{ward(name) } to Wards
+    Patients{ethnic(name) } to Ethnics
+    Patients{job(name) } to Jobs
+    Patients{BHYT(sothe) } to Bhyt
+    Doctors{user(login) required} to User
+    Doctors{ethnic(name) } to Ethnics
+    Doctors{country(name) } to Countries
+    ThongTinVaoVien{patient required} to Patients
+    ThongTinVaoVien{phongkham(name) } to PhongKham
+    Doctors{bank(name) } to Banks
+}
+relationship ManyToOne {
+	Cities{country(name) required} to Countries
+    Districts{city(name) required} to Cities
+	Wards{district(name) required} to Districts
+	PhongKham{chuyenkhoa(name) required} to ChuyenKhoa
+	Doctors{chuyenkhoa(name) } to ChuyenKhoa
+    LichHen{doctor(name) } to Doctors
+    LichHen{user } to User
+}
+relationship ManyToMany {
+	LichLamViec{doctor required} to Doctors{lichlamviec}
+}

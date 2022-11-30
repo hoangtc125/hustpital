@@ -1,0 +1,108 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144057",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "patients",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "gender",
+      "fieldType": "Gender",
+      "fieldValues": "Male,Female,Custome"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateOfBirth",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "citizenIdentification",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "maBHXH",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "workPlace",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "workAddress",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "patientType",
+      "fieldType": "BHYT",
+      "fieldValues": "Yes,No"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Patients",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "countries",
+      "ownerSide": true,
+      "relationshipName": "country",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "cities",
+      "ownerSide": true,
+      "relationshipName": "city",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "districts",
+      "ownerSide": true,
+      "relationshipName": "district",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "wards",
+      "ownerSide": true,
+      "relationshipName": "ward",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "ethnics",
+      "ownerSide": true,
+      "relationshipName": "ethnic",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "jobs",
+      "ownerSide": true,
+      "relationshipName": "job",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "sothe",
+      "otherEntityName": "bhyt",
+      "ownerSide": true,
+      "relationshipName": "bHYT",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "service": "no"
+}

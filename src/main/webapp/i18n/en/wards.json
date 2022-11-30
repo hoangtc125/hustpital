@@ -1,0 +1,25 @@
+{
+  "hustpitalApp": {
+    "wards": {
+      "home": {
+        "title": "Wards",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Wards",
+        "createOrEditLabel": "Create or edit a Wards",
+        "notFound": "No Wards found"
+      },
+      "created": "A new Wards is created with identifier {{ param }}",
+      "updated": "A Wards is updated with identifier {{ param }}",
+      "deleted": "A Wards is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Wards {{ id }}?"
+      },
+      "detail": {
+        "title": "Wards"
+      },
+      "id": "ID",
+      "name": "Name",
+      "district": "District"
+    }
+  }
+}

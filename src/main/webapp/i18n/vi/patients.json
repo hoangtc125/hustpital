@@ -1,0 +1,40 @@
+{
+  "hustpitalApp": {
+    "patients": {
+      "home": {
+        "title": "Patients",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Patients",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Patients",
+        "notFound": "No Patients found"
+      },
+      "created": "Một Patients mới được tạo với định danh {{ param }}",
+      "updated": "Một Patients cập nhật với định danh {{ param }}",
+      "deleted": "Một Patients đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Patients {{ id }}?"
+      },
+      "detail": {
+        "title": "Patients"
+      },
+      "id": "ID",
+      "name": "Name",
+      "gender": "Gender",
+      "address": "Address",
+      "dateOfBirth": "Date Of Birth",
+      "phone": "Phone",
+      "citizenIdentification": "Citizen Identification",
+      "maBHXH": "Ma BHXH",
+      "workPlace": "Work Place",
+      "workAddress": "Work Address",
+      "patientType": "Patient Type",
+      "country": "Country",
+      "city": "City",
+      "district": "District",
+      "ward": "Ward",
+      "ethnic": "Ethnic",
+      "job": "Job",
+      "bHYT": "B HYT"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "hustpitalApp": {
+    "thongTinVaoVien": {
+      "home": {
+        "title": "Thong Tin Vao Viens",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Thong Tin Vao Vien",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Thong Tin Vao Vien",
+        "notFound": "No Thong Tin Vao Viens found"
+      },
+      "created": "Một Thong Tin Vao Vien mới được tạo với định danh {{ param }}",
+      "updated": "Một Thong Tin Vao Vien cập nhật với định danh {{ param }}",
+      "deleted": "Một Thong Tin Vao Vien đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Thong Tin Vao Vien {{ id }}?"
+      },
+      "detail": {
+        "title": "Thong Tin Vao Vien"
+      },
+      "id": "ID",
+      "ngayKham": "Ngay Kham",
+      "tinhTrangVaoVien": "Tinh Trang Vao Vien",
+      "soPhieu": "So Phieu",
+      "maBVChuyenDen": "Ma BV Chuyen Den",
+      "benhChuyenDen": "Benh Chuyen Den",
+      "patient": "Patient",
+      "phongkham": "Phongkham"
+    }
+  }
+}

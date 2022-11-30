@@ -1,0 +1,26 @@
+{
+  "hustpitalApp": {
+    "phongKham": {
+      "home": {
+        "title": "Phong Khams",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Phong Kham",
+        "createOrEditLabel": "Create or edit a Phong Kham",
+        "notFound": "No Phong Khams found"
+      },
+      "created": "A new Phong Kham is created with identifier {{ param }}",
+      "updated": "A Phong Kham is updated with identifier {{ param }}",
+      "deleted": "A Phong Kham is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Phong Kham {{ id }}?"
+      },
+      "detail": {
+        "title": "Phong Kham"
+      },
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "chuyenkhoa": "Chuyenkhoa"
+    }
+  }
+}

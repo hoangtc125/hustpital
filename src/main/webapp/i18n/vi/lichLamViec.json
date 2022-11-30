@@ -1,0 +1,26 @@
+{
+  "hustpitalApp": {
+    "lichLamViec": {
+      "home": {
+        "title": "Lich Lam Viecs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Lich Lam Viec",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Lich Lam Viec",
+        "notFound": "No Lich Lam Viecs found"
+      },
+      "created": "Một Lich Lam Viec mới được tạo với định danh {{ param }}",
+      "updated": "Một Lich Lam Viec cập nhật với định danh {{ param }}",
+      "deleted": "Một Lich Lam Viec đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Lich Lam Viec {{ id }}?"
+      },
+      "detail": {
+        "title": "Lich Lam Viec"
+      },
+      "id": "ID",
+      "thu": "Thu",
+      "thoiGian": "Thoi Gian",
+      "doctor": "Doctor"
+    }
+  }
+}

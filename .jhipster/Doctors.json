@@ -1,0 +1,92 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144101",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "doctors",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "citizenIdentification",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "maBHXH",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "gender",
+      "fieldType": "Gender",
+      "fieldValues": "Male,Female,Custome"
+    },
+    {
+      "fieldName": "dateOfBirth",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "maSoThue",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Doctors",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "login",
+      "otherEntityName": "user",
+      "ownerSide": true,
+      "relationshipName": "user",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "ethnics",
+      "ownerSide": true,
+      "relationshipName": "ethnic",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "countries",
+      "ownerSide": true,
+      "relationshipName": "country",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "banks",
+      "ownerSide": true,
+      "relationshipName": "bank",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "chuyenKhoa",
+      "relationshipName": "chuyenkhoa",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "lichLamViec",
+      "otherEntityRelationshipName": "doctor",
+      "ownerSide": false,
+      "relationshipName": "lichlamviec",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "service": "no"
+}

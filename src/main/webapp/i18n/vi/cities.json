@@ -1,0 +1,25 @@
+{
+  "hustpitalApp": {
+    "cities": {
+      "home": {
+        "title": "Cities",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Cities",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Cities",
+        "notFound": "No Cities found"
+      },
+      "created": "Một Cities mới được tạo với định danh {{ param }}",
+      "updated": "Một Cities cập nhật với định danh {{ param }}",
+      "deleted": "Một Cities đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Cities {{ id }}?"
+      },
+      "detail": {
+        "title": "Cities"
+      },
+      "id": "ID",
+      "name": "Name",
+      "country": "Country"
+    }
+  }
+}

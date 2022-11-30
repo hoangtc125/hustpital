@@ -1,0 +1,24 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144059",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "banks",
+  "fields": [
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Banks",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

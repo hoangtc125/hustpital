@@ -1,0 +1,32 @@
+{
+  "hustpitalApp": {
+    "lichHen": {
+      "home": {
+        "title": "Lich Hens",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Lich Hen",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Lich Hen",
+        "notFound": "No Lich Hens found"
+      },
+      "created": "Một Lich Hen mới được tạo với định danh {{ param }}",
+      "updated": "Một Lich Hen cập nhật với định danh {{ param }}",
+      "deleted": "Một Lich Hen đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Lich Hen {{ id }}?"
+      },
+      "detail": {
+        "title": "Lich Hen"
+      },
+      "id": "ID",
+      "name": "Name",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "lyDoKham": "Ly Do Kham",
+      "dateOfBirth": "Date Of Birth",
+      "lichhenType": "Lichhen Type",
+      "doctor": "Doctor",
+      "user": "User"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "hustpitalApp": {
+    "patients": {
+      "home": {
+        "title": "Patients",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Patients",
+        "createOrEditLabel": "Create or edit a Patients",
+        "notFound": "No Patients found"
+      },
+      "created": "A new Patients is created with identifier {{ param }}",
+      "updated": "A Patients is updated with identifier {{ param }}",
+      "deleted": "A Patients is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Patients {{ id }}?"
+      },
+      "detail": {
+        "title": "Patients"
+      },
+      "id": "ID",
+      "name": "Name",
+      "gender": "Gender",
+      "address": "Address",
+      "dateOfBirth": "Date Of Birth",
+      "phone": "Phone",
+      "citizenIdentification": "Citizen Identification",
+      "maBHXH": "Ma BHXH",
+      "workPlace": "Work Place",
+      "workAddress": "Work Address",
+      "patientType": "Patient Type",
+      "country": "Country",
+      "city": "City",
+      "district": "District",
+      "ward": "Ward",
+      "ethnic": "Ethnic",
+      "job": "Job",
+      "bHYT": "B HYT"
+    }
+  }
+}

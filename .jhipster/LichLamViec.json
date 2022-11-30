@@ -1,0 +1,33 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144100",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "lich_lam_viec",
+  "fields": [
+    {
+      "fieldName": "thu",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "thoiGian",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "LichLamViec",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "doctors",
+      "otherEntityRelationshipName": "lichlamviec",
+      "ownerSide": true,
+      "relationshipName": "doctor",
+      "relationshipType": "many-to-many",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "service": "no"
+}

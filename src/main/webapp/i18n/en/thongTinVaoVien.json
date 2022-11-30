@@ -1,0 +1,30 @@
+{
+  "hustpitalApp": {
+    "thongTinVaoVien": {
+      "home": {
+        "title": "Thong Tin Vao Viens",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Thong Tin Vao Vien",
+        "createOrEditLabel": "Create or edit a Thong Tin Vao Vien",
+        "notFound": "No Thong Tin Vao Viens found"
+      },
+      "created": "A new Thong Tin Vao Vien is created with identifier {{ param }}",
+      "updated": "A Thong Tin Vao Vien is updated with identifier {{ param }}",
+      "deleted": "A Thong Tin Vao Vien is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Thong Tin Vao Vien {{ id }}?"
+      },
+      "detail": {
+        "title": "Thong Tin Vao Vien"
+      },
+      "id": "ID",
+      "ngayKham": "Ngay Kham",
+      "tinhTrangVaoVien": "Tinh Trang Vao Vien",
+      "soPhieu": "So Phieu",
+      "maBVChuyenDen": "Ma BV Chuyen Den",
+      "benhChuyenDen": "Benh Chuyen Den",
+      "patient": "Patient",
+      "phongkham": "Phongkham"
+    }
+  }
+}

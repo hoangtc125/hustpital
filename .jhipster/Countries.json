@@ -1,0 +1,20 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144050",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "countries",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Countries",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

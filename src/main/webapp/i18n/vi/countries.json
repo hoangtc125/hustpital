@@ -1,0 +1,24 @@
+{
+  "hustpitalApp": {
+    "countries": {
+      "home": {
+        "title": "Countries",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Countries",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Countries",
+        "notFound": "No Countries found"
+      },
+      "created": "Một Countries mới được tạo với định danh {{ param }}",
+      "updated": "Một Countries cập nhật với định danh {{ param }}",
+      "deleted": "Một Countries đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Countries {{ id }}?"
+      },
+      "detail": {
+        "title": "Countries"
+      },
+      "id": "ID",
+      "name": "Name"
+    }
+  }
+}

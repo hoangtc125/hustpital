@@ -1,0 +1,32 @@
+{
+  "hustpitalApp": {
+    "bhyt": {
+      "home": {
+        "title": "Bhyts",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Bhyt",
+        "createOrEditLabel": "Create or edit a Bhyt",
+        "notFound": "No Bhyts found"
+      },
+      "created": "A new Bhyt is created with identifier {{ param }}",
+      "updated": "A Bhyt is updated with identifier {{ param }}",
+      "deleted": "A Bhyt is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Bhyt {{ id }}?"
+      },
+      "detail": {
+        "title": "Bhyt"
+      },
+      "id": "ID",
+      "qrcode": "Qrcode",
+      "sothe": "Sothe",
+      "maKCBBD": "Ma KCBBD",
+      "diachi": "Diachi",
+      "ngayBatDau": "Ngay Bat Dau",
+      "ngayKetThuc": "Ngay Ket Thuc",
+      "ngayBatDau5namLT": "Ngay Bat Dau 5 Nam LT",
+      "ngayBatDauMienCCT": "Ngay Bat Dau Mien CCT",
+      "ngayKetThucMienCCT": "Ngay Ket Thuc Mien CCT"
+    }
+  }
+}

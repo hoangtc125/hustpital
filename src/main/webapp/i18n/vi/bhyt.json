@@ -1,0 +1,32 @@
+{
+  "hustpitalApp": {
+    "bhyt": {
+      "home": {
+        "title": "Bhyts",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Thêm mới một Bhyt",
+        "createOrEditLabel": "Thêm mới hoặc cập nhật Bhyt",
+        "notFound": "No Bhyts found"
+      },
+      "created": "Một Bhyt mới được tạo với định danh {{ param }}",
+      "updated": "Một Bhyt cập nhật với định danh {{ param }}",
+      "deleted": "Một Bhyt đã xóa với định danh {{ param }}",
+      "delete": {
+        "question": "Bạn có chắc là muốn xóa Bhyt {{ id }}?"
+      },
+      "detail": {
+        "title": "Bhyt"
+      },
+      "id": "ID",
+      "qrcode": "Qrcode",
+      "sothe": "Sothe",
+      "maKCBBD": "Ma KCBBD",
+      "diachi": "Diachi",
+      "ngayBatDau": "Ngay Bat Dau",
+      "ngayKetThuc": "Ngay Ket Thuc",
+      "ngayBatDau5namLT": "Ngay Bat Dau 5 Nam LT",
+      "ngayBatDauMienCCT": "Ngay Bat Dau Mien CCT",
+      "ngayKetThucMienCCT": "Ngay Ket Thuc Mien CCT"
+    }
+  }
+}

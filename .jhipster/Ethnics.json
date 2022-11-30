@@ -1,0 +1,20 @@
+{
+  "applications": "*",
+  "changelogDate": "20221130144054",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "ethnics",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Ethnics",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}
