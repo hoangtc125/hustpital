@@ -31,7 +31,7 @@ export const ThongTinVaoVienUpdate = () => {
   const updateSuccess = useAppSelector(state => state.thongTinVaoVien.updateSuccess);
 
   const handleClose = () => {
-    navigate('/thong-tin-vao-vien');
+    navigate('/thong-tin-vao-vien' + location.search);
   };
 
   useEffect(() => {

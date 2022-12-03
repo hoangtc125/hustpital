@@ -25,7 +25,7 @@ export const CountriesDeleteDialog = () => {
   const updateSuccess = useAppSelector(state => state.countries.updateSuccess);
 
   const handleClose = () => {
-    navigate('/countries');
+    navigate('/countries' + location.search);
   };
 
   useEffect(() => {

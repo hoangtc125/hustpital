@@ -2,6 +2,7 @@ package com.hust.hustpital.web.rest;
 
 import com.hust.hustpital.domain.Doctors;
 import com.hust.hustpital.repository.DoctorsRepository;
+import com.hust.hustpital.service.DoctorsService;
 import com.hust.hustpital.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,9 +14,15 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -32,9 +39,12 @@ public class DoctorsResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final DoctorsService doctorsService;
+
     private final DoctorsRepository doctorsRepository;
 
-    public DoctorsResource(DoctorsRepository doctorsRepository) {
+    public DoctorsResource(DoctorsService doctorsService, DoctorsRepository doctorsRepository) {
+        this.doctorsService = doctorsService;
         this.doctorsRepository = doctorsRepository;
     }
 
@@ -51,7 +61,7 @@ public class DoctorsResource {
         if (doctors.getId() != null) {
             throw new BadRequestAlertException("A new doctors cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Doctors result = doctorsRepository.save(doctors);
+        Doctors result = doctorsService.save(doctors);
         return ResponseEntity
             .created(new URI("/api/doctors/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -85,7 +95,7 @@ public class DoctorsResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Doctors result = doctorsRepository.save(doctors);
+        Doctors result = doctorsService.update(doctors);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, doctors.getId()))
@@ -120,37 +130,7 @@ public class DoctorsResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Doctors> result = doctorsRepository
-            .findById(doctors.getId())
-            .map(existingDoctors -> {
-                if (doctors.getName() != null) {
-                    existingDoctors.setName(doctors.getName());
-                }
-                if (doctors.getPhone() != null) {
-                    existingDoctors.setPhone(doctors.getPhone());
-                }
-                if (doctors.getCitizenIdentification() != null) {
-                    existingDoctors.setCitizenIdentification(doctors.getCitizenIdentification());
-                }
-                if (doctors.getMaBHXH() != null) {
-                    existingDoctors.setMaBHXH(doctors.getMaBHXH());
-                }
-                if (doctors.getGender() != null) {
-                    existingDoctors.setGender(doctors.getGender());
-                }
-                if (doctors.getDateOfBirth() != null) {
-                    existingDoctors.setDateOfBirth(doctors.getDateOfBirth());
-                }
-                if (doctors.getAddress() != null) {
-                    existingDoctors.setAddress(doctors.getAddress());
-                }
-                if (doctors.getMaSoThue() != null) {
-                    existingDoctors.setMaSoThue(doctors.getMaSoThue());
-                }
-
-                return existingDoctors;
-            })
-            .map(doctorsRepository::save);
+        Optional<Doctors> result = doctorsService.partialUpdate(doctors);
 
         return ResponseUtil.wrapOrNotFound(result, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, doctors.getId()));
     }
@@ -158,17 +138,24 @@ public class DoctorsResource {
     /**
      * {@code GET  /doctors} : get all the doctors.
      *
+     * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of doctors in body.
      */
     @GetMapping("/doctors")
-    public List<Doctors> getAllDoctors(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all Doctors");
+    public ResponseEntity<List<Doctors>> getAllDoctors(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of Doctors");
+        Page<Doctors> page;
         if (eagerload) {
-            return doctorsRepository.findAllWithEagerRelationships();
+            page = doctorsService.findAllWithEagerRelationships(pageable);
         } else {
-            return doctorsRepository.findAll();
+            page = doctorsService.findAll(pageable);
         }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -180,7 +167,7 @@ public class DoctorsResource {
     @GetMapping("/doctors/{id}")
     public ResponseEntity<Doctors> getDoctors(@PathVariable String id) {
         log.debug("REST request to get Doctors : {}", id);
-        Optional<Doctors> doctors = doctorsRepository.findOneWithEagerRelationships(id);
+        Optional<Doctors> doctors = doctorsService.findOne(id);
         return ResponseUtil.wrapOrNotFound(doctors);
     }
 
@@ -193,7 +180,7 @@ public class DoctorsResource {
     @DeleteMapping("/doctors/{id}")
     public ResponseEntity<Void> deleteDoctors(@PathVariable String id) {
         log.debug("REST request to delete Doctors : {}", id);
-        doctorsRepository.deleteById(id);
+        doctorsService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

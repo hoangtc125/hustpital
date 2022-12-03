@@ -25,7 +25,7 @@ export const BhytUpdate = () => {
   const updateSuccess = useAppSelector(state => state.bhyt.updateSuccess);
 
   const handleClose = () => {
-    navigate('/bhyt');
+    navigate('/bhyt' + location.search);
   };
 
   useEffect(() => {

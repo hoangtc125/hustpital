@@ -11,6 +11,7 @@ import com.hust.hustpital.domain.Doctors;
 import com.hust.hustpital.domain.User;
 import com.hust.hustpital.domain.enumeration.Gender;
 import com.hust.hustpital.repository.DoctorsRepository;
+import com.hust.hustpital.service.DoctorsService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -71,6 +72,9 @@ class DoctorsResourceIT {
 
     @Mock
     private DoctorsRepository doctorsRepositoryMock;
+
+    @Mock
+    private DoctorsService doctorsServiceMock;
 
     @Autowired
     private MockMvc restDoctorsMockMvc;
@@ -191,16 +195,16 @@ class DoctorsResourceIT {
 
     @SuppressWarnings({ "unchecked" })
     void getAllDoctorsWithEagerRelationshipsIsEnabled() throws Exception {
-        when(doctorsRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(doctorsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restDoctorsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(doctorsRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(doctorsServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @SuppressWarnings({ "unchecked" })
     void getAllDoctorsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(doctorsRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(doctorsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restDoctorsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
         verify(doctorsRepositoryMock, times(1)).findAll(any(Pageable.class));

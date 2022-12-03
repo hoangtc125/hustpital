@@ -10,6 +10,7 @@ import com.hust.hustpital.IntegrationTest;
 import com.hust.hustpital.domain.Patients;
 import com.hust.hustpital.domain.ThongTinVaoVien;
 import com.hust.hustpital.repository.ThongTinVaoVienRepository;
+import com.hust.hustpital.service.ThongTinVaoVienService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -61,6 +62,9 @@ class ThongTinVaoVienResourceIT {
 
     @Mock
     private ThongTinVaoVienRepository thongTinVaoVienRepositoryMock;
+
+    @Mock
+    private ThongTinVaoVienService thongTinVaoVienServiceMock;
 
     @Autowired
     private MockMvc restThongTinVaoVienMockMvc;
@@ -175,16 +179,16 @@ class ThongTinVaoVienResourceIT {
 
     @SuppressWarnings({ "unchecked" })
     void getAllThongTinVaoViensWithEagerRelationshipsIsEnabled() throws Exception {
-        when(thongTinVaoVienRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(thongTinVaoVienServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restThongTinVaoVienMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(thongTinVaoVienRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(thongTinVaoVienServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @SuppressWarnings({ "unchecked" })
     void getAllThongTinVaoViensWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(thongTinVaoVienRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(thongTinVaoVienServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restThongTinVaoVienMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
         verify(thongTinVaoVienRepositoryMock, times(1)).findAll(any(Pageable.class));

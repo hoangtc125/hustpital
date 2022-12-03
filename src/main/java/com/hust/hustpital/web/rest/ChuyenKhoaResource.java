@@ -2,6 +2,7 @@ package com.hust.hustpital.web.rest;
 
 import com.hust.hustpital.domain.ChuyenKhoa;
 import com.hust.hustpital.repository.ChuyenKhoaRepository;
+import com.hust.hustpital.service.ChuyenKhoaService;
 import com.hust.hustpital.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,9 +12,15 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -30,9 +37,12 @@ public class ChuyenKhoaResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ChuyenKhoaService chuyenKhoaService;
+
     private final ChuyenKhoaRepository chuyenKhoaRepository;
 
-    public ChuyenKhoaResource(ChuyenKhoaRepository chuyenKhoaRepository) {
+    public ChuyenKhoaResource(ChuyenKhoaService chuyenKhoaService, ChuyenKhoaRepository chuyenKhoaRepository) {
+        this.chuyenKhoaService = chuyenKhoaService;
         this.chuyenKhoaRepository = chuyenKhoaRepository;
     }
 
@@ -49,7 +59,7 @@ public class ChuyenKhoaResource {
         if (chuyenKhoa.getId() != null) {
             throw new BadRequestAlertException("A new chuyenKhoa cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ChuyenKhoa result = chuyenKhoaRepository.save(chuyenKhoa);
+        ChuyenKhoa result = chuyenKhoaService.save(chuyenKhoa);
         return ResponseEntity
             .created(new URI("/api/chuyen-khoas/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -83,7 +93,7 @@ public class ChuyenKhoaResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        ChuyenKhoa result = chuyenKhoaRepository.save(chuyenKhoa);
+        ChuyenKhoa result = chuyenKhoaService.update(chuyenKhoa);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, chuyenKhoa.getId()))
@@ -118,19 +128,7 @@ public class ChuyenKhoaResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<ChuyenKhoa> result = chuyenKhoaRepository
-            .findById(chuyenKhoa.getId())
-            .map(existingChuyenKhoa -> {
-                if (chuyenKhoa.getCode() != null) {
-                    existingChuyenKhoa.setCode(chuyenKhoa.getCode());
-                }
-                if (chuyenKhoa.getName() != null) {
-                    existingChuyenKhoa.setName(chuyenKhoa.getName());
-                }
-
-                return existingChuyenKhoa;
-            })
-            .map(chuyenKhoaRepository::save);
+        Optional<ChuyenKhoa> result = chuyenKhoaService.partialUpdate(chuyenKhoa);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -141,12 +139,15 @@ public class ChuyenKhoaResource {
     /**
      * {@code GET  /chuyen-khoas} : get all the chuyenKhoas.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of chuyenKhoas in body.
      */
     @GetMapping("/chuyen-khoas")
-    public List<ChuyenKhoa> getAllChuyenKhoas() {
-        log.debug("REST request to get all ChuyenKhoas");
-        return chuyenKhoaRepository.findAll();
+    public ResponseEntity<List<ChuyenKhoa>> getAllChuyenKhoas(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of ChuyenKhoas");
+        Page<ChuyenKhoa> page = chuyenKhoaService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -158,7 +159,7 @@ public class ChuyenKhoaResource {
     @GetMapping("/chuyen-khoas/{id}")
     public ResponseEntity<ChuyenKhoa> getChuyenKhoa(@PathVariable String id) {
         log.debug("REST request to get ChuyenKhoa : {}", id);
-        Optional<ChuyenKhoa> chuyenKhoa = chuyenKhoaRepository.findById(id);
+        Optional<ChuyenKhoa> chuyenKhoa = chuyenKhoaService.findOne(id);
         return ResponseUtil.wrapOrNotFound(chuyenKhoa);
     }
 
@@ -171,7 +172,7 @@ public class ChuyenKhoaResource {
     @DeleteMapping("/chuyen-khoas/{id}")
     public ResponseEntity<Void> deleteChuyenKhoa(@PathVariable String id) {
         log.debug("REST request to delete ChuyenKhoa : {}", id);
-        chuyenKhoaRepository.deleteById(id);
+        chuyenKhoaService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

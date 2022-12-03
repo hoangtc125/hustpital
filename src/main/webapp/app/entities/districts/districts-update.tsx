@@ -28,7 +28,7 @@ export const DistrictsUpdate = () => {
   const updateSuccess = useAppSelector(state => state.districts.updateSuccess);
 
   const handleClose = () => {
-    navigate('/districts');
+    navigate('/districts' + location.search);
   };
 
   useEffect(() => {

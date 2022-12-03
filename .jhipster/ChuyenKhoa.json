@@ -17,8 +17,8 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "ChuyenKhoa",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [],
-  "service": "no"
+  "service": "serviceClass"
 }

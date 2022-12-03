@@ -2,6 +2,7 @@ package com.hust.hustpital.web.rest;
 
 import com.hust.hustpital.domain.LichLamViec;
 import com.hust.hustpital.repository.LichLamViecRepository;
+import com.hust.hustpital.service.LichLamViecService;
 import com.hust.hustpital.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,9 +14,15 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -32,9 +39,12 @@ public class LichLamViecResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final LichLamViecService lichLamViecService;
+
     private final LichLamViecRepository lichLamViecRepository;
 
-    public LichLamViecResource(LichLamViecRepository lichLamViecRepository) {
+    public LichLamViecResource(LichLamViecService lichLamViecService, LichLamViecRepository lichLamViecRepository) {
+        this.lichLamViecService = lichLamViecService;
         this.lichLamViecRepository = lichLamViecRepository;
     }
 
@@ -51,7 +61,7 @@ public class LichLamViecResource {
         if (lichLamViec.getId() != null) {
             throw new BadRequestAlertException("A new lichLamViec cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        LichLamViec result = lichLamViecRepository.save(lichLamViec);
+        LichLamViec result = lichLamViecService.save(lichLamViec);
         return ResponseEntity
             .created(new URI("/api/lich-lam-viecs/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -85,7 +95,7 @@ public class LichLamViecResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        LichLamViec result = lichLamViecRepository.save(lichLamViec);
+        LichLamViec result = lichLamViecService.update(lichLamViec);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, lichLamViec.getId()))
@@ -120,19 +130,7 @@ public class LichLamViecResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<LichLamViec> result = lichLamViecRepository
-            .findById(lichLamViec.getId())
-            .map(existingLichLamViec -> {
-                if (lichLamViec.getThu() != null) {
-                    existingLichLamViec.setThu(lichLamViec.getThu());
-                }
-                if (lichLamViec.getThoiGian() != null) {
-                    existingLichLamViec.setThoiGian(lichLamViec.getThoiGian());
-                }
-
-                return existingLichLamViec;
-            })
-            .map(lichLamViecRepository::save);
+        Optional<LichLamViec> result = lichLamViecService.partialUpdate(lichLamViec);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -143,17 +141,24 @@ public class LichLamViecResource {
     /**
      * {@code GET  /lich-lam-viecs} : get all the lichLamViecs.
      *
+     * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of lichLamViecs in body.
      */
     @GetMapping("/lich-lam-viecs")
-    public List<LichLamViec> getAllLichLamViecs(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all LichLamViecs");
+    public ResponseEntity<List<LichLamViec>> getAllLichLamViecs(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of LichLamViecs");
+        Page<LichLamViec> page;
         if (eagerload) {
-            return lichLamViecRepository.findAllWithEagerRelationships();
+            page = lichLamViecService.findAllWithEagerRelationships(pageable);
         } else {
-            return lichLamViecRepository.findAll();
+            page = lichLamViecService.findAll(pageable);
         }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -165,7 +170,7 @@ public class LichLamViecResource {
     @GetMapping("/lich-lam-viecs/{id}")
     public ResponseEntity<LichLamViec> getLichLamViec(@PathVariable String id) {
         log.debug("REST request to get LichLamViec : {}", id);
-        Optional<LichLamViec> lichLamViec = lichLamViecRepository.findOneWithEagerRelationships(id);
+        Optional<LichLamViec> lichLamViec = lichLamViecService.findOne(id);
         return ResponseUtil.wrapOrNotFound(lichLamViec);
     }
 
@@ -178,7 +183,7 @@ public class LichLamViecResource {
     @DeleteMapping("/lich-lam-viecs/{id}")
     public ResponseEntity<Void> deleteLichLamViec(@PathVariable String id) {
         log.debug("REST request to delete LichLamViec : {}", id);
-        lichLamViecRepository.deleteById(id);
+        lichLamViecService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

@@ -28,7 +28,7 @@ export const LichLamViecUpdate = () => {
   const updateSuccess = useAppSelector(state => state.lichLamViec.updateSuccess);
 
   const handleClose = () => {
-    navigate('/lich-lam-viec');
+    navigate('/lich-lam-viec' + location.search);
   };
 
   useEffect(() => {

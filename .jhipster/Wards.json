@@ -13,7 +13,7 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Wards",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
@@ -24,5 +24,5 @@
       "relationshipValidateRules": "required"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

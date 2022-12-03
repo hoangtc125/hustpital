@@ -11,6 +11,7 @@ import com.hust.hustpital.domain.Patients;
 import com.hust.hustpital.domain.enumeration.BHYT;
 import com.hust.hustpital.domain.enumeration.Gender;
 import com.hust.hustpital.repository.PatientsRepository;
+import com.hust.hustpital.service.PatientsService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -77,6 +78,9 @@ class PatientsResourceIT {
 
     @Mock
     private PatientsRepository patientsRepositoryMock;
+
+    @Mock
+    private PatientsService patientsServiceMock;
 
     @Autowired
     private MockMvc restPatientsMockMvc;
@@ -197,16 +201,16 @@ class PatientsResourceIT {
 
     @SuppressWarnings({ "unchecked" })
     void getAllPatientsWithEagerRelationshipsIsEnabled() throws Exception {
-        when(patientsRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(patientsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restPatientsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(patientsRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(patientsServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @SuppressWarnings({ "unchecked" })
     void getAllPatientsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(patientsRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(patientsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restPatientsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
         verify(patientsRepositoryMock, times(1)).findAll(any(Pageable.class));

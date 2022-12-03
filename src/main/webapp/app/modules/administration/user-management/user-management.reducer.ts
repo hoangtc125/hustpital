@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } fro
 
 import { IUser, defaultValue } from 'app/shared/model/user.model';
 import { IQueryParams, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
+import { cleanEntity } from 'app/shared/util/entity-utils';
 
 const initialState = {
   loading: false,
@@ -46,7 +47,7 @@ export const getUser = createAsyncThunk(
 export const createUser = createAsyncThunk(
   'userManagement/create_user',
   async (user: IUser, thunkAPI) => {
-    const result = await axios.post<IUser>(adminUrl, user);
+    const result = await axios.post<IUser>(adminUrl, cleanEntity(user));
     thunkAPI.dispatch(getUsersAsAdmin({}));
     return result;
   },

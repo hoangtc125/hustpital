@@ -2,6 +2,7 @@ package com.hust.hustpital.web.rest;
 
 import com.hust.hustpital.domain.Bhyt;
 import com.hust.hustpital.repository.BhytRepository;
+import com.hust.hustpital.service.BhytService;
 import com.hust.hustpital.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,9 +12,15 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -30,9 +37,12 @@ public class BhytResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final BhytService bhytService;
+
     private final BhytRepository bhytRepository;
 
-    public BhytResource(BhytRepository bhytRepository) {
+    public BhytResource(BhytService bhytService, BhytRepository bhytRepository) {
+        this.bhytService = bhytService;
         this.bhytRepository = bhytRepository;
     }
 
@@ -49,7 +59,7 @@ public class BhytResource {
         if (bhyt.getId() != null) {
             throw new BadRequestAlertException("A new bhyt cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Bhyt result = bhytRepository.save(bhyt);
+        Bhyt result = bhytService.save(bhyt);
         return ResponseEntity
             .created(new URI("/api/bhyts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -81,7 +91,7 @@ public class BhytResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Bhyt result = bhytRepository.save(bhyt);
+        Bhyt result = bhytService.update(bhyt);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bhyt.getId()))
@@ -114,40 +124,7 @@ public class BhytResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Bhyt> result = bhytRepository
-            .findById(bhyt.getId())
-            .map(existingBhyt -> {
-                if (bhyt.getQrcode() != null) {
-                    existingBhyt.setQrcode(bhyt.getQrcode());
-                }
-                if (bhyt.getSothe() != null) {
-                    existingBhyt.setSothe(bhyt.getSothe());
-                }
-                if (bhyt.getMaKCBBD() != null) {
-                    existingBhyt.setMaKCBBD(bhyt.getMaKCBBD());
-                }
-                if (bhyt.getDiachi() != null) {
-                    existingBhyt.setDiachi(bhyt.getDiachi());
-                }
-                if (bhyt.getNgayBatDau() != null) {
-                    existingBhyt.setNgayBatDau(bhyt.getNgayBatDau());
-                }
-                if (bhyt.getNgayKetThuc() != null) {
-                    existingBhyt.setNgayKetThuc(bhyt.getNgayKetThuc());
-                }
-                if (bhyt.getNgayBatDau5namLT() != null) {
-                    existingBhyt.setNgayBatDau5namLT(bhyt.getNgayBatDau5namLT());
-                }
-                if (bhyt.getNgayBatDauMienCCT() != null) {
-                    existingBhyt.setNgayBatDauMienCCT(bhyt.getNgayBatDauMienCCT());
-                }
-                if (bhyt.getNgayKetThucMienCCT() != null) {
-                    existingBhyt.setNgayKetThucMienCCT(bhyt.getNgayKetThucMienCCT());
-                }
-
-                return existingBhyt;
-            })
-            .map(bhytRepository::save);
+        Optional<Bhyt> result = bhytService.partialUpdate(bhyt);
 
         return ResponseUtil.wrapOrNotFound(result, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, bhyt.getId()));
     }
@@ -155,12 +132,15 @@ public class BhytResource {
     /**
      * {@code GET  /bhyts} : get all the bhyts.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of bhyts in body.
      */
     @GetMapping("/bhyts")
-    public List<Bhyt> getAllBhyts() {
-        log.debug("REST request to get all Bhyts");
-        return bhytRepository.findAll();
+    public ResponseEntity<List<Bhyt>> getAllBhyts(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Bhyts");
+        Page<Bhyt> page = bhytService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -172,7 +152,7 @@ public class BhytResource {
     @GetMapping("/bhyts/{id}")
     public ResponseEntity<Bhyt> getBhyt(@PathVariable String id) {
         log.debug("REST request to get Bhyt : {}", id);
-        Optional<Bhyt> bhyt = bhytRepository.findById(id);
+        Optional<Bhyt> bhyt = bhytService.findOne(id);
         return ResponseUtil.wrapOrNotFound(bhyt);
     }
 
@@ -185,7 +165,7 @@ public class BhytResource {
     @DeleteMapping("/bhyts/{id}")
     public ResponseEntity<Void> deleteBhyt(@PathVariable String id) {
         log.debug("REST request to delete Bhyt : {}", id);
-        bhytRepository.deleteById(id);
+        bhytService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

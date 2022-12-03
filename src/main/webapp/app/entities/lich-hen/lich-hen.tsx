@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Table } from 'reactstrap';
-import { Translate, TextFormat } from 'react-jhipster';
+import { Translate, TextFormat, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
+import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { ILichHen } from 'app/shared/model/lich-hen.model';
@@ -16,15 +18,67 @@ export const LichHen = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const [paginationState, setPaginationState] = useState(
+    overridePaginationStateWithQueryParams(getSortState(location, ITEMS_PER_PAGE, 'id'), location.search)
+  );
+
   const lichHenList = useAppSelector(state => state.lichHen.entities);
   const loading = useAppSelector(state => state.lichHen.loading);
+  const totalItems = useAppSelector(state => state.lichHen.totalItems);
+
+  const getAllEntities = () => {
+    dispatch(
+      getEntities({
+        page: paginationState.activePage - 1,
+        size: paginationState.itemsPerPage,
+        sort: `${paginationState.sort},${paginationState.order}`,
+      })
+    );
+  };
+
+  const sortEntities = () => {
+    getAllEntities();
+    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
+    if (location.search !== endURL) {
+      navigate(`${location.pathname}${endURL}`);
+    }
+  };
 
   useEffect(() => {
-    dispatch(getEntities({}));
-  }, []);
+    sortEntities();
+  }, [paginationState.activePage, paginationState.order, paginationState.sort]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const page = params.get('page');
+    const sort = params.get(SORT);
+    if (page && sort) {
+      const sortSplit = sort.split(',');
+      setPaginationState({
+        ...paginationState,
+        activePage: +page,
+        sort: sortSplit[0],
+        order: sortSplit[1],
+      });
+    }
+  }, [location.search]);
+
+  const sort = p => () => {
+    setPaginationState({
+      ...paginationState,
+      order: paginationState.order === ASC ? DESC : ASC,
+      sort: p,
+    });
+  };
+
+  const handlePagination = currentPage =>
+    setPaginationState({
+      ...paginationState,
+      activePage: currentPage,
+    });
 
   const handleSyncList = () => {
-    dispatch(getEntities({}));
+    sortEntities();
   };
 
   return (
@@ -48,35 +102,35 @@ export const LichHen = () => {
           <Table responsive>
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="hustpitalApp.lichHen.id">ID</Translate>
+                <th className="hand" onClick={sort('id')}>
+                  <Translate contentKey="hustpitalApp.lichHen.id">ID</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('name')}>
+                  <Translate contentKey="hustpitalApp.lichHen.name">Name</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('phone')}>
+                  <Translate contentKey="hustpitalApp.lichHen.phone">Phone</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('email')}>
+                  <Translate contentKey="hustpitalApp.lichHen.email">Email</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('address')}>
+                  <Translate contentKey="hustpitalApp.lichHen.address">Address</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('lyDoKham')}>
+                  <Translate contentKey="hustpitalApp.lichHen.lyDoKham">Ly Do Kham</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('dateOfBirth')}>
+                  <Translate contentKey="hustpitalApp.lichHen.dateOfBirth">Date Of Birth</Translate> <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('lichhenType')}>
+                  <Translate contentKey="hustpitalApp.lichHen.lichhenType">Lichhen Type</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
-                  <Translate contentKey="hustpitalApp.lichHen.name">Name</Translate>
+                  <Translate contentKey="hustpitalApp.lichHen.doctor">Doctor</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
-                  <Translate contentKey="hustpitalApp.lichHen.phone">Phone</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="hustpitalApp.lichHen.email">Email</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="hustpitalApp.lichHen.address">Address</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="hustpitalApp.lichHen.lyDoKham">Ly Do Kham</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="hustpitalApp.lichHen.dateOfBirth">Date Of Birth</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="hustpitalApp.lichHen.lichhenType">Lichhen Type</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="hustpitalApp.lichHen.doctor">Doctor</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="hustpitalApp.lichHen.user">User</Translate>
+                  <Translate contentKey="hustpitalApp.lichHen.user">User</Translate> <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -108,13 +162,25 @@ export const LichHen = () => {
                           <Translate contentKey="entity.action.view">View</Translate>
                         </span>
                       </Button>
-                      <Button tag={Link} to={`/lich-hen/${lichHen.id}/edit`} color="primary" size="sm" data-cy="entityEditButton">
+                      <Button
+                        tag={Link}
+                        to={`/lich-hen/${lichHen.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="primary"
+                        size="sm"
+                        data-cy="entityEditButton"
+                      >
                         <FontAwesomeIcon icon="pencil-alt" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.edit">Edit</Translate>
                         </span>
                       </Button>
-                      <Button tag={Link} to={`/lich-hen/${lichHen.id}/delete`} color="danger" size="sm" data-cy="entityDeleteButton">
+                      <Button
+                        tag={Link}
+                        to={`/lich-hen/${lichHen.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="danger"
+                        size="sm"
+                        data-cy="entityDeleteButton"
+                      >
                         <FontAwesomeIcon icon="trash" />{' '}
                         <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.delete">Delete</Translate>
@@ -134,6 +200,24 @@ export const LichHen = () => {
           )
         )}
       </div>
+      {totalItems ? (
+        <div className={lichHenList && lichHenList.length > 0 ? '' : 'd-none'}>
+          <div className="justify-content-center d-flex">
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
+          </div>
+          <div className="justify-content-center d-flex">
+            <JhiPagination
+              activePage={paginationState.activePage}
+              onSelect={handlePagination}
+              maxButtons={5}
+              itemsPerPage={paginationState.itemsPerPage}
+              totalItems={totalItems}
+            />
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };

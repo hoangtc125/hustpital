@@ -45,7 +45,7 @@ export const DoctorsUpdate = () => {
   const genderValues = Object.keys(Gender);
 
   const handleClose = () => {
-    navigate('/doctors');
+    navigate('/doctors' + location.search);
   };
 
   useEffect(() => {

@@ -2,6 +2,7 @@ package com.hust.hustpital.web.rest;
 
 import com.hust.hustpital.domain.PhongKham;
 import com.hust.hustpital.repository.PhongKhamRepository;
+import com.hust.hustpital.service.PhongKhamService;
 import com.hust.hustpital.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,9 +14,15 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -32,9 +39,12 @@ public class PhongKhamResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final PhongKhamService phongKhamService;
+
     private final PhongKhamRepository phongKhamRepository;
 
-    public PhongKhamResource(PhongKhamRepository phongKhamRepository) {
+    public PhongKhamResource(PhongKhamService phongKhamService, PhongKhamRepository phongKhamRepository) {
+        this.phongKhamService = phongKhamService;
         this.phongKhamRepository = phongKhamRepository;
     }
 
@@ -51,7 +61,7 @@ public class PhongKhamResource {
         if (phongKham.getId() != null) {
             throw new BadRequestAlertException("A new phongKham cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        PhongKham result = phongKhamRepository.save(phongKham);
+        PhongKham result = phongKhamService.save(phongKham);
         return ResponseEntity
             .created(new URI("/api/phong-khams/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -85,7 +95,7 @@ public class PhongKhamResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        PhongKham result = phongKhamRepository.save(phongKham);
+        PhongKham result = phongKhamService.update(phongKham);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, phongKham.getId()))
@@ -120,19 +130,7 @@ public class PhongKhamResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<PhongKham> result = phongKhamRepository
-            .findById(phongKham.getId())
-            .map(existingPhongKham -> {
-                if (phongKham.getCode() != null) {
-                    existingPhongKham.setCode(phongKham.getCode());
-                }
-                if (phongKham.getName() != null) {
-                    existingPhongKham.setName(phongKham.getName());
-                }
-
-                return existingPhongKham;
-            })
-            .map(phongKhamRepository::save);
+        Optional<PhongKham> result = phongKhamService.partialUpdate(phongKham);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -143,17 +141,24 @@ public class PhongKhamResource {
     /**
      * {@code GET  /phong-khams} : get all the phongKhams.
      *
+     * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of phongKhams in body.
      */
     @GetMapping("/phong-khams")
-    public List<PhongKham> getAllPhongKhams(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all PhongKhams");
+    public ResponseEntity<List<PhongKham>> getAllPhongKhams(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of PhongKhams");
+        Page<PhongKham> page;
         if (eagerload) {
-            return phongKhamRepository.findAllWithEagerRelationships();
+            page = phongKhamService.findAllWithEagerRelationships(pageable);
         } else {
-            return phongKhamRepository.findAll();
+            page = phongKhamService.findAll(pageable);
         }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -165,7 +170,7 @@ public class PhongKhamResource {
     @GetMapping("/phong-khams/{id}")
     public ResponseEntity<PhongKham> getPhongKham(@PathVariable String id) {
         log.debug("REST request to get PhongKham : {}", id);
-        Optional<PhongKham> phongKham = phongKhamRepository.findOneWithEagerRelationships(id);
+        Optional<PhongKham> phongKham = phongKhamService.findOne(id);
         return ResponseUtil.wrapOrNotFound(phongKham);
     }
 
@@ -178,7 +183,7 @@ public class PhongKhamResource {
     @DeleteMapping("/phong-khams/{id}")
     public ResponseEntity<Void> deletePhongKham(@PathVariable String id) {
         log.debug("REST request to delete PhongKham : {}", id);
-        phongKhamRepository.deleteById(id);
+        phongKhamService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

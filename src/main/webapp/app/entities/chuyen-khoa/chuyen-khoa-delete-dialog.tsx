@@ -25,7 +25,7 @@ export const ChuyenKhoaDeleteDialog = () => {
   const updateSuccess = useAppSelector(state => state.chuyenKhoa.updateSuccess);
 
   const handleClose = () => {
-    navigate('/chuyen-khoa');
+    navigate('/chuyen-khoa' + location.search);
   };
 
   useEffect(() => {

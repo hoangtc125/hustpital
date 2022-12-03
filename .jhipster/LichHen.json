@@ -38,7 +38,7 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "LichHen",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
@@ -53,5 +53,5 @@
       "relationshipType": "many-to-one"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

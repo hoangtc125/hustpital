@@ -17,7 +17,7 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "LichLamViec",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
@@ -29,5 +29,5 @@
       "relationshipValidateRules": "required"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

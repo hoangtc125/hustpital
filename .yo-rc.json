@@ -37,6 +37,9 @@
       "LichHen"
     ],
     "entitySuffix": "",
+    "herokuAppName": "hustpital",
+    "herokuDeployType": "git",
+    "herokuJavaVersion": "16",
     "jhiPrefix": "jhi",
     "jhipsterVersion": "7.9.3",
     "jwtSecretKey": "ZWMyZjI2Mjg5NmM0NzE3YjFiYzU0YWFmZjFjZjRmNzFkOWU0NjUzYTJiNThhYmM0NmQ3MmM1YTE0ZjM4NTE4YjliYzU2NzNkNWZlNDlkYWEzY2RiYTUyZDQ0ZGUxOGNmMDQyZjg0ZWIwYWY1Nzc1MWRiYTkyNzY2MzIxODA1MjQ=",

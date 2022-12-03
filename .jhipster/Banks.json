@@ -17,8 +17,8 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Banks",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [],
-  "service": "no"
+  "service": "serviceClass"
 }

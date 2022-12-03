@@ -13,8 +13,8 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Jobs",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [],
-  "service": "no"
+  "service": "serviceClass"
 }

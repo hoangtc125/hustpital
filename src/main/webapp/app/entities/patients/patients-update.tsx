@@ -50,7 +50,7 @@ export const PatientsUpdate = () => {
   const bHYTValues = Object.keys(BHYT);
 
   const handleClose = () => {
-    navigate('/patients');
+    navigate('/patients' + location.search);
   };
 
   useEffect(() => {

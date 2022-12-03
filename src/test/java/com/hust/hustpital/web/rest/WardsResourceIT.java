@@ -10,6 +10,7 @@ import com.hust.hustpital.IntegrationTest;
 import com.hust.hustpital.domain.Districts;
 import com.hust.hustpital.domain.Wards;
 import com.hust.hustpital.repository.WardsRepository;
+import com.hust.hustpital.service.WardsService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -47,6 +48,9 @@ class WardsResourceIT {
 
     @Mock
     private WardsRepository wardsRepositoryMock;
+
+    @Mock
+    private WardsService wardsServiceMock;
 
     @Autowired
     private MockMvc restWardsMockMvc;
@@ -139,16 +143,16 @@ class WardsResourceIT {
 
     @SuppressWarnings({ "unchecked" })
     void getAllWardsWithEagerRelationshipsIsEnabled() throws Exception {
-        when(wardsRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(wardsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restWardsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(wardsRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(wardsServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @SuppressWarnings({ "unchecked" })
     void getAllWardsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(wardsRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(wardsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restWardsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
         verify(wardsRepositoryMock, times(1)).findAll(any(Pageable.class));

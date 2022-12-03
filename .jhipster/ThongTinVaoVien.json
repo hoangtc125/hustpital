@@ -29,7 +29,7 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "ThongTinVaoVien",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
@@ -47,5 +47,5 @@
       "relationshipType": "one-to-one"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

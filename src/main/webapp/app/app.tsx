@@ -51,7 +51,7 @@ export const App = () => {
           />
         </ErrorBoundary>
         <div className="container-fluid view-container" id="app-view-container">
-          <Card className="jh-card">
+          <Card className="jh-card" style={{ margin: '20px 0px' }}>
             <ErrorBoundary>
               <AppRoutes />
             </ErrorBoundary>

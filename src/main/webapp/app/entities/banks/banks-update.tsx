@@ -25,7 +25,7 @@ export const BanksUpdate = () => {
   const updateSuccess = useAppSelector(state => state.banks.updateSuccess);
 
   const handleClose = () => {
-    navigate('/banks');
+    navigate('/banks' + location.search);
   };
 
   useEffect(() => {

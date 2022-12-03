@@ -2,6 +2,7 @@ package com.hust.hustpital.web.rest;
 
 import com.hust.hustpital.domain.Districts;
 import com.hust.hustpital.repository.DistrictsRepository;
+import com.hust.hustpital.service.DistrictsService;
 import com.hust.hustpital.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,9 +14,15 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -32,9 +39,12 @@ public class DistrictsResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final DistrictsService districtsService;
+
     private final DistrictsRepository districtsRepository;
 
-    public DistrictsResource(DistrictsRepository districtsRepository) {
+    public DistrictsResource(DistrictsService districtsService, DistrictsRepository districtsRepository) {
+        this.districtsService = districtsService;
         this.districtsRepository = districtsRepository;
     }
 
@@ -51,7 +61,7 @@ public class DistrictsResource {
         if (districts.getId() != null) {
             throw new BadRequestAlertException("A new districts cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Districts result = districtsRepository.save(districts);
+        Districts result = districtsService.save(districts);
         return ResponseEntity
             .created(new URI("/api/districts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -85,7 +95,7 @@ public class DistrictsResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Districts result = districtsRepository.save(districts);
+        Districts result = districtsService.update(districts);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, districts.getId()))
@@ -120,16 +130,7 @@ public class DistrictsResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Districts> result = districtsRepository
-            .findById(districts.getId())
-            .map(existingDistricts -> {
-                if (districts.getName() != null) {
-                    existingDistricts.setName(districts.getName());
-                }
-
-                return existingDistricts;
-            })
-            .map(districtsRepository::save);
+        Optional<Districts> result = districtsService.partialUpdate(districts);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -140,17 +141,24 @@ public class DistrictsResource {
     /**
      * {@code GET  /districts} : get all the districts.
      *
+     * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of districts in body.
      */
     @GetMapping("/districts")
-    public List<Districts> getAllDistricts(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all Districts");
+    public ResponseEntity<List<Districts>> getAllDistricts(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of Districts");
+        Page<Districts> page;
         if (eagerload) {
-            return districtsRepository.findAllWithEagerRelationships();
+            page = districtsService.findAllWithEagerRelationships(pageable);
         } else {
-            return districtsRepository.findAll();
+            page = districtsService.findAll(pageable);
         }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -162,7 +170,7 @@ public class DistrictsResource {
     @GetMapping("/districts/{id}")
     public ResponseEntity<Districts> getDistricts(@PathVariable String id) {
         log.debug("REST request to get Districts : {}", id);
-        Optional<Districts> districts = districtsRepository.findOneWithEagerRelationships(id);
+        Optional<Districts> districts = districtsService.findOne(id);
         return ResponseUtil.wrapOrNotFound(districts);
     }
 
@@ -175,7 +183,7 @@ public class DistrictsResource {
     @DeleteMapping("/districts/{id}")
     public ResponseEntity<Void> deleteDistricts(@PathVariable String id) {
         log.debug("REST request to delete Districts : {}", id);
-        districtsRepository.deleteById(id);
+        districtsService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

@@ -25,7 +25,7 @@ export const WardsDeleteDialog = () => {
   const updateSuccess = useAppSelector(state => state.wards.updateSuccess);
 
   const handleClose = () => {
-    navigate('/wards');
+    navigate('/wards' + location.search);
   };
 
   useEffect(() => {

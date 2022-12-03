@@ -25,7 +25,7 @@ export const EthnicsDeleteDialog = () => {
   const updateSuccess = useAppSelector(state => state.ethnics.updateSuccess);
 
   const handleClose = () => {
-    navigate('/ethnics');
+    navigate('/ethnics' + location.search);
   };
 
   useEffect(() => {

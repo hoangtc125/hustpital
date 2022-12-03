@@ -2,6 +2,7 @@ package com.hust.hustpital.web.rest;
 
 import com.hust.hustpital.domain.Cities;
 import com.hust.hustpital.repository.CitiesRepository;
+import com.hust.hustpital.service.CitiesService;
 import com.hust.hustpital.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,9 +14,15 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -32,9 +39,12 @@ public class CitiesResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final CitiesService citiesService;
+
     private final CitiesRepository citiesRepository;
 
-    public CitiesResource(CitiesRepository citiesRepository) {
+    public CitiesResource(CitiesService citiesService, CitiesRepository citiesRepository) {
+        this.citiesService = citiesService;
         this.citiesRepository = citiesRepository;
     }
 
@@ -51,7 +61,7 @@ public class CitiesResource {
         if (cities.getId() != null) {
             throw new BadRequestAlertException("A new cities cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Cities result = citiesRepository.save(cities);
+        Cities result = citiesService.save(cities);
         return ResponseEntity
             .created(new URI("/api/cities/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -85,7 +95,7 @@ public class CitiesResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Cities result = citiesRepository.save(cities);
+        Cities result = citiesService.update(cities);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, cities.getId()))
@@ -120,16 +130,7 @@ public class CitiesResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Cities> result = citiesRepository
-            .findById(cities.getId())
-            .map(existingCities -> {
-                if (cities.getName() != null) {
-                    existingCities.setName(cities.getName());
-                }
-
-                return existingCities;
-            })
-            .map(citiesRepository::save);
+        Optional<Cities> result = citiesService.partialUpdate(cities);
 
         return ResponseUtil.wrapOrNotFound(result, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, cities.getId()));
     }
@@ -137,17 +138,24 @@ public class CitiesResource {
     /**
      * {@code GET  /cities} : get all the cities.
      *
+     * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of cities in body.
      */
     @GetMapping("/cities")
-    public List<Cities> getAllCities(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all Cities");
+    public ResponseEntity<List<Cities>> getAllCities(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of Cities");
+        Page<Cities> page;
         if (eagerload) {
-            return citiesRepository.findAllWithEagerRelationships();
+            page = citiesService.findAllWithEagerRelationships(pageable);
         } else {
-            return citiesRepository.findAll();
+            page = citiesService.findAll(pageable);
         }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -159,7 +167,7 @@ public class CitiesResource {
     @GetMapping("/cities/{id}")
     public ResponseEntity<Cities> getCities(@PathVariable String id) {
         log.debug("REST request to get Cities : {}", id);
-        Optional<Cities> cities = citiesRepository.findOneWithEagerRelationships(id);
+        Optional<Cities> cities = citiesService.findOne(id);
         return ResponseUtil.wrapOrNotFound(cities);
     }
 
@@ -172,7 +180,7 @@ public class CitiesResource {
     @DeleteMapping("/cities/{id}")
     public ResponseEntity<Void> deleteCities(@PathVariable String id) {
         log.debug("REST request to delete Cities : {}", id);
-        citiesRepository.deleteById(id);
+        citiesService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

@@ -2,6 +2,7 @@ package com.hust.hustpital.web.rest;
 
 import com.hust.hustpital.domain.Countries;
 import com.hust.hustpital.repository.CountriesRepository;
+import com.hust.hustpital.service.CountriesService;
 import com.hust.hustpital.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,9 +12,15 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -30,9 +37,12 @@ public class CountriesResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final CountriesService countriesService;
+
     private final CountriesRepository countriesRepository;
 
-    public CountriesResource(CountriesRepository countriesRepository) {
+    public CountriesResource(CountriesService countriesService, CountriesRepository countriesRepository) {
+        this.countriesService = countriesService;
         this.countriesRepository = countriesRepository;
     }
 
@@ -49,7 +59,7 @@ public class CountriesResource {
         if (countries.getId() != null) {
             throw new BadRequestAlertException("A new countries cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Countries result = countriesRepository.save(countries);
+        Countries result = countriesService.save(countries);
         return ResponseEntity
             .created(new URI("/api/countries/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -83,7 +93,7 @@ public class CountriesResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Countries result = countriesRepository.save(countries);
+        Countries result = countriesService.update(countries);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, countries.getId()))
@@ -118,16 +128,7 @@ public class CountriesResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Countries> result = countriesRepository
-            .findById(countries.getId())
-            .map(existingCountries -> {
-                if (countries.getName() != null) {
-                    existingCountries.setName(countries.getName());
-                }
-
-                return existingCountries;
-            })
-            .map(countriesRepository::save);
+        Optional<Countries> result = countriesService.partialUpdate(countries);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -138,12 +139,15 @@ public class CountriesResource {
     /**
      * {@code GET  /countries} : get all the countries.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of countries in body.
      */
     @GetMapping("/countries")
-    public List<Countries> getAllCountries() {
-        log.debug("REST request to get all Countries");
-        return countriesRepository.findAll();
+    public ResponseEntity<List<Countries>> getAllCountries(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Countries");
+        Page<Countries> page = countriesService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -155,7 +159,7 @@ public class CountriesResource {
     @GetMapping("/countries/{id}")
     public ResponseEntity<Countries> getCountries(@PathVariable String id) {
         log.debug("REST request to get Countries : {}", id);
-        Optional<Countries> countries = countriesRepository.findById(id);
+        Optional<Countries> countries = countriesService.findOne(id);
         return ResponseUtil.wrapOrNotFound(countries);
     }
 
@@ -168,7 +172,7 @@ public class CountriesResource {
     @DeleteMapping("/countries/{id}")
     public ResponseEntity<Void> deleteCountries(@PathVariable String id) {
         log.debug("REST request to delete Countries : {}", id);
-        countriesRepository.deleteById(id);
+        countriesService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

@@ -10,6 +10,7 @@ import com.hust.hustpital.IntegrationTest;
 import com.hust.hustpital.domain.ChuyenKhoa;
 import com.hust.hustpital.domain.PhongKham;
 import com.hust.hustpital.repository.PhongKhamRepository;
+import com.hust.hustpital.service.PhongKhamService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +51,9 @@ class PhongKhamResourceIT {
 
     @Mock
     private PhongKhamRepository phongKhamRepositoryMock;
+
+    @Mock
+    private PhongKhamService phongKhamServiceMock;
 
     @Autowired
     private MockMvc restPhongKhamMockMvc;
@@ -144,16 +148,16 @@ class PhongKhamResourceIT {
 
     @SuppressWarnings({ "unchecked" })
     void getAllPhongKhamsWithEagerRelationshipsIsEnabled() throws Exception {
-        when(phongKhamRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(phongKhamServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restPhongKhamMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(phongKhamRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(phongKhamServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @SuppressWarnings({ "unchecked" })
     void getAllPhongKhamsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(phongKhamRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(phongKhamServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restPhongKhamMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
         verify(phongKhamRepositoryMock, times(1)).findAll(any(Pageable.class));

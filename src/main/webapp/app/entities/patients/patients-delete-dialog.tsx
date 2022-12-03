@@ -25,7 +25,7 @@ export const PatientsDeleteDialog = () => {
   const updateSuccess = useAppSelector(state => state.patients.updateSuccess);
 
   const handleClose = () => {
-    navigate('/patients');
+    navigate('/patients' + location.search);
   };
 
   useEffect(() => {

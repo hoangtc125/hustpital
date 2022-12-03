@@ -28,7 +28,7 @@ export const CitiesUpdate = () => {
   const updateSuccess = useAppSelector(state => state.cities.updateSuccess);
 
   const handleClose = () => {
-    navigate('/cities');
+    navigate('/cities' + location.search);
   };
 
   useEffect(() => {

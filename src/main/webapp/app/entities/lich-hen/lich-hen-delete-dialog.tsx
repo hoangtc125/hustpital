@@ -25,7 +25,7 @@ export const LichHenDeleteDialog = () => {
   const updateSuccess = useAppSelector(state => state.lichHen.updateSuccess);
 
   const handleClose = () => {
-    navigate('/lich-hen');
+    navigate('/lich-hen' + location.search);
   };
 
   useEffect(() => {

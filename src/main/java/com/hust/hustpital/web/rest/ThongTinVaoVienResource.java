@@ -2,6 +2,7 @@ package com.hust.hustpital.web.rest;
 
 import com.hust.hustpital.domain.ThongTinVaoVien;
 import com.hust.hustpital.repository.ThongTinVaoVienRepository;
+import com.hust.hustpital.service.ThongTinVaoVienService;
 import com.hust.hustpital.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,9 +14,15 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -32,9 +39,12 @@ public class ThongTinVaoVienResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ThongTinVaoVienService thongTinVaoVienService;
+
     private final ThongTinVaoVienRepository thongTinVaoVienRepository;
 
-    public ThongTinVaoVienResource(ThongTinVaoVienRepository thongTinVaoVienRepository) {
+    public ThongTinVaoVienResource(ThongTinVaoVienService thongTinVaoVienService, ThongTinVaoVienRepository thongTinVaoVienRepository) {
+        this.thongTinVaoVienService = thongTinVaoVienService;
         this.thongTinVaoVienRepository = thongTinVaoVienRepository;
     }
 
@@ -52,7 +62,7 @@ public class ThongTinVaoVienResource {
         if (thongTinVaoVien.getId() != null) {
             throw new BadRequestAlertException("A new thongTinVaoVien cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ThongTinVaoVien result = thongTinVaoVienRepository.save(thongTinVaoVien);
+        ThongTinVaoVien result = thongTinVaoVienService.save(thongTinVaoVien);
         return ResponseEntity
             .created(new URI("/api/thong-tin-vao-viens/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -86,7 +96,7 @@ public class ThongTinVaoVienResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        ThongTinVaoVien result = thongTinVaoVienRepository.save(thongTinVaoVien);
+        ThongTinVaoVien result = thongTinVaoVienService.update(thongTinVaoVien);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, thongTinVaoVien.getId()))
@@ -121,28 +131,7 @@ public class ThongTinVaoVienResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<ThongTinVaoVien> result = thongTinVaoVienRepository
-            .findById(thongTinVaoVien.getId())
-            .map(existingThongTinVaoVien -> {
-                if (thongTinVaoVien.getNgayKham() != null) {
-                    existingThongTinVaoVien.setNgayKham(thongTinVaoVien.getNgayKham());
-                }
-                if (thongTinVaoVien.getTinhTrangVaoVien() != null) {
-                    existingThongTinVaoVien.setTinhTrangVaoVien(thongTinVaoVien.getTinhTrangVaoVien());
-                }
-                if (thongTinVaoVien.getSoPhieu() != null) {
-                    existingThongTinVaoVien.setSoPhieu(thongTinVaoVien.getSoPhieu());
-                }
-                if (thongTinVaoVien.getMaBVChuyenDen() != null) {
-                    existingThongTinVaoVien.setMaBVChuyenDen(thongTinVaoVien.getMaBVChuyenDen());
-                }
-                if (thongTinVaoVien.getBenhChuyenDen() != null) {
-                    existingThongTinVaoVien.setBenhChuyenDen(thongTinVaoVien.getBenhChuyenDen());
-                }
-
-                return existingThongTinVaoVien;
-            })
-            .map(thongTinVaoVienRepository::save);
+        Optional<ThongTinVaoVien> result = thongTinVaoVienService.partialUpdate(thongTinVaoVien);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -153,17 +142,24 @@ public class ThongTinVaoVienResource {
     /**
      * {@code GET  /thong-tin-vao-viens} : get all the thongTinVaoViens.
      *
+     * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of thongTinVaoViens in body.
      */
     @GetMapping("/thong-tin-vao-viens")
-    public List<ThongTinVaoVien> getAllThongTinVaoViens(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all ThongTinVaoViens");
+    public ResponseEntity<List<ThongTinVaoVien>> getAllThongTinVaoViens(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of ThongTinVaoViens");
+        Page<ThongTinVaoVien> page;
         if (eagerload) {
-            return thongTinVaoVienRepository.findAllWithEagerRelationships();
+            page = thongTinVaoVienService.findAllWithEagerRelationships(pageable);
         } else {
-            return thongTinVaoVienRepository.findAll();
+            page = thongTinVaoVienService.findAll(pageable);
         }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -175,7 +171,7 @@ public class ThongTinVaoVienResource {
     @GetMapping("/thong-tin-vao-viens/{id}")
     public ResponseEntity<ThongTinVaoVien> getThongTinVaoVien(@PathVariable String id) {
         log.debug("REST request to get ThongTinVaoVien : {}", id);
-        Optional<ThongTinVaoVien> thongTinVaoVien = thongTinVaoVienRepository.findOneWithEagerRelationships(id);
+        Optional<ThongTinVaoVien> thongTinVaoVien = thongTinVaoVienService.findOne(id);
         return ResponseUtil.wrapOrNotFound(thongTinVaoVien);
     }
 
@@ -188,7 +184,7 @@ public class ThongTinVaoVienResource {
     @DeleteMapping("/thong-tin-vao-viens/{id}")
     public ResponseEntity<Void> deleteThongTinVaoVien(@PathVariable String id) {
         log.debug("REST request to delete ThongTinVaoVien : {}", id);
-        thongTinVaoVienRepository.deleteById(id);
+        thongTinVaoVienService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

@@ -10,6 +10,7 @@ import com.hust.hustpital.IntegrationTest;
 import com.hust.hustpital.domain.Doctors;
 import com.hust.hustpital.domain.LichLamViec;
 import com.hust.hustpital.repository.LichLamViecRepository;
+import com.hust.hustpital.service.LichLamViecService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +51,9 @@ class LichLamViecResourceIT {
 
     @Mock
     private LichLamViecRepository lichLamViecRepositoryMock;
+
+    @Mock
+    private LichLamViecService lichLamViecServiceMock;
 
     @Autowired
     private MockMvc restLichLamViecMockMvc;
@@ -144,16 +148,16 @@ class LichLamViecResourceIT {
 
     @SuppressWarnings({ "unchecked" })
     void getAllLichLamViecsWithEagerRelationshipsIsEnabled() throws Exception {
-        when(lichLamViecRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(lichLamViecServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restLichLamViecMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(lichLamViecRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(lichLamViecServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @SuppressWarnings({ "unchecked" })
     void getAllLichLamViecsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(lichLamViecRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(lichLamViecServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restLichLamViecMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
         verify(lichLamViecRepositoryMock, times(1)).findAll(any(Pageable.class));

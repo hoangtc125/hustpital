@@ -42,7 +42,7 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Doctors",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [
     {
@@ -88,5 +88,5 @@
       "relationshipType": "many-to-many"
     }
   ],
-  "service": "no"
+  "service": "serviceClass"
 }

@@ -10,6 +10,7 @@ import com.hust.hustpital.IntegrationTest;
 import com.hust.hustpital.domain.Cities;
 import com.hust.hustpital.domain.Districts;
 import com.hust.hustpital.repository.DistrictsRepository;
+import com.hust.hustpital.service.DistrictsService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -47,6 +48,9 @@ class DistrictsResourceIT {
 
     @Mock
     private DistrictsRepository districtsRepositoryMock;
+
+    @Mock
+    private DistrictsService districtsServiceMock;
 
     @Autowired
     private MockMvc restDistrictsMockMvc;
@@ -139,16 +143,16 @@ class DistrictsResourceIT {
 
     @SuppressWarnings({ "unchecked" })
     void getAllDistrictsWithEagerRelationshipsIsEnabled() throws Exception {
-        when(districtsRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(districtsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restDistrictsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(districtsRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(districtsServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @SuppressWarnings({ "unchecked" })
     void getAllDistrictsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(districtsRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(districtsServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restDistrictsMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
         verify(districtsRepositoryMock, times(1)).findAll(any(Pageable.class));

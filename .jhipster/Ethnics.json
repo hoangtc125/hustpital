@@ -13,8 +13,8 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Ethnics",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [],
-  "service": "no"
+  "service": "serviceClass"
 }

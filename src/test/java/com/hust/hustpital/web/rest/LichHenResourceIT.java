@@ -10,6 +10,7 @@ import com.hust.hustpital.IntegrationTest;
 import com.hust.hustpital.domain.LichHen;
 import com.hust.hustpital.domain.enumeration.Admission;
 import com.hust.hustpital.repository.LichHenRepository;
+import com.hust.hustpital.service.LichHenService;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -67,6 +68,9 @@ class LichHenResourceIT {
 
     @Mock
     private LichHenRepository lichHenRepositoryMock;
+
+    @Mock
+    private LichHenService lichHenServiceMock;
 
     @Autowired
     private MockMvc restLichHenMockMvc;
@@ -175,16 +179,16 @@ class LichHenResourceIT {
 
     @SuppressWarnings({ "unchecked" })
     void getAllLichHensWithEagerRelationshipsIsEnabled() throws Exception {
-        when(lichHenRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(lichHenServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restLichHenMockMvc.perform(get(ENTITY_API_URL + "?eagerload=true")).andExpect(status().isOk());
 
-        verify(lichHenRepositoryMock, times(1)).findAllWithEagerRelationships(any());
+        verify(lichHenServiceMock, times(1)).findAllWithEagerRelationships(any());
     }
 
     @SuppressWarnings({ "unchecked" })
     void getAllLichHensWithEagerRelationshipsIsNotEnabled() throws Exception {
-        when(lichHenRepositoryMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+        when(lichHenServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
 
         restLichHenMockMvc.perform(get(ENTITY_API_URL + "?eagerload=false")).andExpect(status().isOk());
         verify(lichHenRepositoryMock, times(1)).findAll(any(Pageable.class));

@@ -2,6 +2,7 @@ package com.hust.hustpital.web.rest;
 
 import com.hust.hustpital.domain.LichHen;
 import com.hust.hustpital.repository.LichHenRepository;
+import com.hust.hustpital.service.LichHenService;
 import com.hust.hustpital.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,9 +12,15 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -30,9 +37,12 @@ public class LichHenResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final LichHenService lichHenService;
+
     private final LichHenRepository lichHenRepository;
 
-    public LichHenResource(LichHenRepository lichHenRepository) {
+    public LichHenResource(LichHenService lichHenService, LichHenRepository lichHenRepository) {
+        this.lichHenService = lichHenService;
         this.lichHenRepository = lichHenRepository;
     }
 
@@ -49,7 +59,7 @@ public class LichHenResource {
         if (lichHen.getId() != null) {
             throw new BadRequestAlertException("A new lichHen cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        LichHen result = lichHenRepository.save(lichHen);
+        LichHen result = lichHenService.save(lichHen);
         return ResponseEntity
             .created(new URI("/api/lich-hens/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId()))
@@ -83,7 +93,7 @@ public class LichHenResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        LichHen result = lichHenRepository.save(lichHen);
+        LichHen result = lichHenService.update(lichHen);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, lichHen.getId()))
@@ -118,34 +128,7 @@ public class LichHenResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<LichHen> result = lichHenRepository
-            .findById(lichHen.getId())
-            .map(existingLichHen -> {
-                if (lichHen.getName() != null) {
-                    existingLichHen.setName(lichHen.getName());
-                }
-                if (lichHen.getPhone() != null) {
-                    existingLichHen.setPhone(lichHen.getPhone());
-                }
-                if (lichHen.getEmail() != null) {
-                    existingLichHen.setEmail(lichHen.getEmail());
-                }
-                if (lichHen.getAddress() != null) {
-                    existingLichHen.setAddress(lichHen.getAddress());
-                }
-                if (lichHen.getLyDoKham() != null) {
-                    existingLichHen.setLyDoKham(lichHen.getLyDoKham());
-                }
-                if (lichHen.getDateOfBirth() != null) {
-                    existingLichHen.setDateOfBirth(lichHen.getDateOfBirth());
-                }
-                if (lichHen.getLichhenType() != null) {
-                    existingLichHen.setLichhenType(lichHen.getLichhenType());
-                }
-
-                return existingLichHen;
-            })
-            .map(lichHenRepository::save);
+        Optional<LichHen> result = lichHenService.partialUpdate(lichHen);
 
         return ResponseUtil.wrapOrNotFound(result, HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, lichHen.getId()));
     }
@@ -153,17 +136,24 @@ public class LichHenResource {
     /**
      * {@code GET  /lich-hens} : get all the lichHens.
      *
+     * @param pageable the pagination information.
      * @param eagerload flag to eager load entities from relationships (This is applicable for many-to-many).
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of lichHens in body.
      */
     @GetMapping("/lich-hens")
-    public List<LichHen> getAllLichHens(@RequestParam(required = false, defaultValue = "false") boolean eagerload) {
-        log.debug("REST request to get all LichHens");
+    public ResponseEntity<List<LichHen>> getAllLichHens(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable,
+        @RequestParam(required = false, defaultValue = "false") boolean eagerload
+    ) {
+        log.debug("REST request to get a page of LichHens");
+        Page<LichHen> page;
         if (eagerload) {
-            return lichHenRepository.findAllWithEagerRelationships();
+            page = lichHenService.findAllWithEagerRelationships(pageable);
         } else {
-            return lichHenRepository.findAll();
+            page = lichHenService.findAll(pageable);
         }
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -175,7 +165,7 @@ public class LichHenResource {
     @GetMapping("/lich-hens/{id}")
     public ResponseEntity<LichHen> getLichHen(@PathVariable String id) {
         log.debug("REST request to get LichHen : {}", id);
-        Optional<LichHen> lichHen = lichHenRepository.findOneWithEagerRelationships(id);
+        Optional<LichHen> lichHen = lichHenService.findOne(id);
         return ResponseUtil.wrapOrNotFound(lichHen);
     }
 
@@ -188,7 +178,7 @@ public class LichHenResource {
     @DeleteMapping("/lich-hens/{id}")
     public ResponseEntity<Void> deleteLichHen(@PathVariable String id) {
         log.debug("REST request to delete LichHen : {}", id);
-        lichHenRepository.deleteById(id);
+        lichHenService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id)).build();
     }
 }

@@ -28,7 +28,7 @@ export const PhongKhamUpdate = () => {
   const updateSuccess = useAppSelector(state => state.phongKham.updateSuccess);
 
   const handleClose = () => {
-    navigate('/phong-kham');
+    navigate('/phong-kham' + location.search);
   };
 
   useEffect(() => {
